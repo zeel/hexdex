@@ -61,22 +61,22 @@ $( document )
 
     drawCircle();
 
-    var x=centerX, y=centerY, dx= 1, dy=1;
+    var x=CENTRE_X, y=CENTRE_Y, dx= 1, dy=1;
 
-    function draw() {
+    var ball = new Ball();
+
+    function drawBall() {
       // drawing code
       // ctx.clip();
       repaintCircle();
       ctx.beginPath();
-      ctx.arc( x, y, 10, 0, Math.PI * 2 );
+      ctx.arc( x, y, ball.radius, 0, Math.PI * 2 );
       ctx.fillStyle = "#0095DD";
       ctx.fill();
       ctx.closePath();
       // ctx.clip();
-      x+=dx;
-      y+=dy;
+      x+=ball.dx;
+      y+=ball.dy;
     }
-
-     drawCircle();
     setInterval( draw, 10 );
   } );
