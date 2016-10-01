@@ -22,7 +22,7 @@ document.onkeydown = function(e) {
         drawCircle = function(){
     colors.forEach(function( color, iter ){
       ctx.beginPath();
-      ctx.arc(175, 200, 150,  0.34 * (iter)* Math.PI + currentAngle, 0.34 * (iter + 1)* Math.PI + currentAngle);
+      ctx.arc(canvas.width/2, canvas.height/2, 225,  0.34 * (iter)* Math.PI + currentAngle, 0.34 * (iter + 1)* Math.PI + currentAngle);
       ctx.strokeStyle=color;
       ctx.lineWidth=20;
       ctx.stroke();
