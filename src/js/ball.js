@@ -4,5 +4,6 @@ Ball = function () {
 
 	this.dx = Math.random() * xDirection;
 	this.dy = Math.random() * yDirection;
+	this.color = COLORS[Math.floor(Math.random()*COLORS.length)];
 	this.radius = 10;
 };
