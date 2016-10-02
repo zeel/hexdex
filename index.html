@@ -3,14 +3,24 @@
 <head>
 	<script src="src/lib/jquery.js"></script>
 </head>
-<body style="margin:0; text-align:center">
-	<h3>HEXDASH</h3>
+<body >
+<div style="margin:0; text-align:center; width:1400px; height:700px;">
+<h3>HEXDASH</h3>
 	<canvas
-	id="myCanvas"
+	id="wheelCanvas"
 	keepalive="true"
 	width="1400"
 	height="700"
-	style="border:1px solid"></canvas>
+	style="border:1px solid; position: absolute; top: 0; left : 0; z-index:0;"></canvas>
+	<canvas
+	id="ballCanvas"
+	keepalive="true"
+	width="1400"
+	height="700"
+	style="border:1px solid; position: absolute; top: 0; left : 0; z-index:1;"
+	></canvas>
+</div>
+	
 	<script type="text/javascript" src="src/js/main.js"></script>
 	<script type="text/javascript" src="src/js/color.js"></script>
 	<script type="text/javascript" src="src/js/ball.js"></script>

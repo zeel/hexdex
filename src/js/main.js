@@ -1,10 +1,12 @@
 $(document)
     .ready(function () {
 
-        var canvas = document.getElementById("myCanvas"),
+        var canvas = document.getElementById("wheelCanvas"),
+        	ballCanvas = document.getElementById("ballCanvas"),
             centerX = canvas.width / 2,
             centerY = canvas.height / 2,
             ctx = canvas.getContext("2d"),
+            ballCtx = ballCanvas.getContext("2d"),
             currentAngle = 0,
             circleRadius = 150,
             Balls = {},
@@ -72,7 +74,7 @@ $(document)
         }
 
         createBall = function(){
-        	var ball = new Ball(ctx, centerX, centerY, {isBallCollided : isBallCollided, onBallCollision : onBallCollision});
+        	var ball = new Ball(ballCtx, centerX, centerY, {isBallCollided : isBallCollided, onBallCollision : onBallCollision});
         	Balls[ball.id] = ball;
         }
         
