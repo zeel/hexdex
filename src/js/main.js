@@ -6,13 +6,13 @@ $(document)
             centerY = canvas.height / 2,
             ctx = canvas.getContext("2d"),
             currentAngle = 0,
+            circleRadius = 150,
+            Balls = {},
             angleToChange = 2 * Math.PI / 36,
             colorsLength = COLORS.length,
             raf = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || window.oRequestAnimationFrame;
 
-//draws circle;
-
-
+         //logic to rotate wheel
         document.onkeydown = function (e) {
             switch (e.keyCode) {
                 case 37:
@@ -26,25 +26,30 @@ $(document)
             currentAngle += 2 * Math.PI;
             currentAngle %= 2 * Math.PI;
 
-            var ballAngle = Math.atan2(-ball.dy, -ball.dx) + Math.PI;
-            var ballAngleAfterRotation = ballAngle - currentAngle;
+            
+			function repaintCircle() {
 
-            ballAngleAfterRotation += 2 * Math.PI;
-            ballAngleAfterRotation %= 2 * Math.PI;
+			            //Clears
+			            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            var ballInSegment = Math.floor((3 / Math.PI) * ballAngleAfterRotation);
-
-            console.log(COLORS[ballInSegment] === ball.color);
-
+			            drawCircle();
+			        }
             raf(repaintCircle);
         };
 
 
+        didBallHitSameColour = function(ball){
+            var ballAngleAfterRotation = (ball.angle - currentAngle + 2 * Math.PI) % (2 * Math.PI),
+            ballInSegment = Math.floor((3 / Math.PI) * ballAngleAfterRotation);
+
+            console.log(COLORS[ballInSegment] === ball.color);
+            return COLORS[ballInSegment] === ball.color;
+        }
+
         drawCircle = function () {
             COLORS.forEach(function (color, iter) {
                 ctx.beginPath();
-                ctx.arc(centerX, centerY, 150, (2 / colorsLength) * ( iter ) * Math.PI + currentAngle, (2 / colorsLength) * ( iter + 1 ) *
-                    Math.PI + currentAngle);
+                ctx.arc(centerX, centerY, circleRadius, (2 / colorsLength) * ( iter ) * Math.PI + currentAngle, (2 / colorsLength) * ( iter + 1 ) * Math.PI + currentAngle);
                 ctx.strokeStyle = color;
                 ctx.lineWidth = 20;
                 ctx.stroke();
@@ -53,36 +58,26 @@ $(document)
             })
         };
 
-        function repaintCircle() {
-
-            //Clears
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            drawCircle();
+        isBallCollided = function(ball){
+        	return Math.sqrt( (ball.x-centerX)*(ball.x-centerX) + (ball.y-centerY)*(ball.y-centerY) ) >= circleRadius;
         }
 
+        onBallCollision = function(ball){
+        	if(didBallHitSameColour(ball)){
+        		delete Balls[ball.id];
+	        	createBall();
+        	}
+        	ball.destroy();
+        	
+        }
+
+        createBall = function(){
+        	var ball = new Ball(ctx, centerX, centerY, {isBallCollided : isBallCollided, onBallCollision : onBallCollision});
+        	Balls[ball.id] = ball;
+        }
+        
         drawCircle();
-
-        var x = centerX, y = centerY;
-
-        var ball = new Ball();
-
-        function drawBall() {
-            // drawing code
-            // ctx.clip();
-            repaintCircle();
-            ctx.beginPath();
-            ctx.arc(x, y, ball.radius, 0, Math.PI * 2);
-            ctx.fillStyle = ball.color;
-            ctx.fill();
-            ctx.closePath();
-            // ctx.clip();
-            x += ball.dx;
-            y += ball.dy;
-
-        }
-
-
-        setInterval(drawBall, 10);
+        createBall();
+       
     });
         
